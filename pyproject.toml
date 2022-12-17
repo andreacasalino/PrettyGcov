@@ -1,0 +1,29 @@
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PrettyGcov"
+version = "1.0.0"
+description = "python tools to gather, analize and visualize gcov files taken from c++ projects"
+readme = "README.md"
+authors = [{ name = "Andrea Casalino", email = "andrecasa91@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["gcov", "c++", "coverage", "gcda", "gcno"]
+dependencies = [
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["gcov"]
+
+[project.urls]
+Homepage = "https://github.com/andreacasalino/PrettyGcov"
+
+[project.scripts]
+server = "PrettyGcov.WebServer.WebServer:main"
