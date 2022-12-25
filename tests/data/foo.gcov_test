@@ -1,0 +1,11 @@
+        -:    0:Source:/home/andrea/Scrivania/GitProj/GcovReport/cpp-sample/src/logger/Formatter.h
+        -:    0:Graph:Main.cpp.gcno
+        -:    0:Data:Main.cpp.gcda
+        -:    0:Runs:1
+        -:    1:first
+    #####:    2:second second
+        2:    3:third
+    #####:    4:fourth
+        1:    5:fifth
+        -:    6:sixth
+       11:    7:seventh

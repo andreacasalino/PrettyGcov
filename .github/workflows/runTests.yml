@@ -1,0 +1,29 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  unitTests:
+    strategy:
+      matrix:
+        name: [ubuntu]
+        include:
+            - name: ubuntu
+              os: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.0.0
+    - name: ScanTests
+      run:  python3 tests/testsUnit/ScanTests.py
+    - name: GcovFileTests
+      run:  python3 tests/testsUnit/GcovFileTests.py
+    - name: CoverageTests
+      run:  python3 tests/testsUnit/CoverageTests.py
