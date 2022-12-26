@@ -1,12 +1,102 @@
-import os
-ASSETS_FOLDER = os.path.join(os.path.dirname(__file__), '.', 'assets')
+###################################################################################
+###                                  ASSETS                                     ###
+###################################################################################
 
-def importFile(fileNameAbs: str) -> str:
-    with open(fileNameAbs, 'r') as f:
-        return f.read()
+ElementStats_HTML="""
+<div>
+    <!-- file name info -->
+    <div class="column" style="width: 40%;"> {ELEMENT} </div>
 
-def importPage(fileName: str) -> str:
-    return importFile('{}/{}'.format(ASSETS_FOLDER, fileName))
+    <!-- coverge info -->
+    <div class="column" style="width: 55%;"> 
+        <div class="column" style="width: 50px; background-color:rgb({RED}, {GREEN},0);">{PRCTG_COVERED}%</div>
+        <div class="column" style="width: 80%; margin-left: 10px;">
+            <div class="column covered" style="width: {PRCTG_COVERED}%;">{LINES_COVERED}</div>
+            <div class="column uncovered" style="width: {PRCTG_UNCOVERED}%;">{LINES_UNCOVERED}</div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+"""
+
+File_HTML="""
+<head>
+{STYLE}
+</head>
+<body>
+
+{NAVIGATION}
+    <br>
+    <br>
+
+{FILE_STATS}
+
+{LINES}
+</body>
+"""
+
+FileLine_HTML="""<p class="noSpace {CLASS}">{LINE}:   {CONTENT}</p>"""
+
+Folder_HTML="""
+<head>
+{STYLE}
+</head>
+<body>
+    
+{NAVIGATION}
+    <br>
+    <br>
+
+{FOLDER_STATS}
+
+    <p> Folder content: </p>
+
+{LINES}
+    
+</body>
+"""
+
+Link_HTML="""<a class="cliccable" style="color: white;" href="{URL}">{DESC}</a>"""
+
+Style_HTML="""
+<style>
+    body {
+        background-color: black;
+        color: white;
+    }
+
+    .noSpace {margin:0;padding:0;}
+    .column {float: left;}
+    .covered {background-color: green}
+    .uncovered {background-color: red}
+    
+    .cliccable {
+        cursor: pointer;
+        opacity: 1.0;
+        filter: alpha(opacity=100);
+    }
+    .cliccable:hover {
+        cursor: pointer;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+    }
+</style>
+"""
+
+PAGES = {
+    'ElementStats':ElementStats_HTML,
+    'File':File_HTML,
+    'FileLine':FileLine_HTML,
+    'Folder':Folder_HTML,
+    'Link':Link_HTML,
+    'Style':Style_HTML
+}
+
+###################################################################################
+
+def importPage(name: str) -> str:
+    return PAGES[name]
 
 def replaceWithNumb(subject: str, toFind: str, val: any) -> str:
     return subject.replace(toFind, str(val))
@@ -14,7 +104,7 @@ def replaceWithNumb(subject: str, toFind: str, val: any) -> str:
 from PrettyGcov.GcovStat import GCovStat
 
 def makeElementStats(elementInfo: str, coverage: GCovStat) -> str:
-    result = importPage('ElementStats.html')
+    result = importPage('ElementStats')
     result = result.replace('{ELEMENT}', elementInfo)
     prctg_cov = coverage.getCoveragePrctg()
 
@@ -30,7 +120,7 @@ def makeElementStats(elementInfo: str, coverage: GCovStat) -> str:
     return result
 
 def makeLink(url: str, desc: str) -> str:
-    result = importPage('Link.html')
+    result = importPage('Link')
     result = result.replace('{URL}', url)
     result = result.replace('{DESC}', desc)
     return result
@@ -57,8 +147,8 @@ class PageFactory:
         return 'http://localhost:{}/element?{}'.format(self.port_, params)
 
     def makeFilePage_(self, gcovFile: GcovFile, gcovStat: GCovStat) -> str:
-        result = importPage('File.html')
-        result = result.replace('{STYLE}', importPage('Style.html'))
+        result = importPage('File')
+        result = result.replace('{STYLE}', importPage('Style'))
 
         result = result.replace('{NAVIGATION}', makeLink(self.makeUrl_(self.coverageTree_.path_), 'back to root'))
 
@@ -66,7 +156,7 @@ class PageFactory:
         result = result.replace('{FILE_STATS}', stats)
 
         lines = ''
-        newLineTemplate = importPage('FileLine.html')
+        newLineTemplate = importPage('FileLine')
         linesCount = 1
         for line in gcovFile.lines:
             cls = ''
@@ -84,8 +174,8 @@ class PageFactory:
         return result
 
     def makeFolderPage_(self, subTree: CoverageTree) -> str:
-        result = importPage('Folder.html')
-        result = result.replace('{STYLE}', importPage('Style.html'))
+        result = importPage('Folder')
+        result = result.replace('{STYLE}', importPage('Style'))
 
         navigation_links = makeLink(self.makeUrl_(self.coverageTree_.path_), 'back to root')
         if subTree.path_ != self.coverageTree_.path_:

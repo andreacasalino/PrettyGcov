@@ -1,0 +1,10 @@
+- update version in both
+    - __init__.py
+    - setup.py
+
+- generate wheel (dist folder): python3 setup.py sdist bdist_wheel
+
+- upload package to PyPi: twine upload dist/*
+
+- useful links:
+    - https://www.youtube.com/watch?v=tEFkHEKypLI
