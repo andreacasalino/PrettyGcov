@@ -2,12 +2,16 @@
 - [Typical scenario](#scenarios)
 - [Usage](#usage)
 
-![foo:](image.png)
+![overview:](image.png)
+
+**Git** sources are available here: https://github.com/andreacasalino/PrettyGcov
+
+This package can be also **pip** installed. Visit: https://pypi.org/project/PrettyGcov/  
 
 ## INTRO
 
 Have you ever needed to process results coming from [**gcov**](https://gcc.gnu.org/onlinedocs/gcc/Gcov-Intro.html#Gcov-Intro) to check the coverage of **c++** projects?
-Felt like you needed a tool to automatically gathe, parse and process [**gcov**](https://gcc.gnu.org/onlinedocs/gcc/Gcov-Intro.html#Gcov-Intro) results?
+Felt like you needed a tool to automatically gather, parse and process [**gcov**](https://gcc.gnu.org/onlinedocs/gcc/Gcov-Intro.html#Gcov-Intro) results?
 Don't worry, you are in the right place as this package is what you are looking for :)!
 
 **PrettyGcov** is a **python** package able to parse coverage results, compute statistics for the entire projects or any subfolder and let you inspect them from your browser.
