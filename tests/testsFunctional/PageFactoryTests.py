@@ -34,12 +34,12 @@ def filePageGen():
         f.write(filePage)
 filePageGen()
 
-from util.CppProjectTest.CMakeHandler import configureAndRunTests
+from util.CMakeHandler import configureXmlParser
 from PrettyGcov.CoverageMap import CoverageMap
 from PrettyGcov.CoverageTree import makeCoverageTree
 
 def folderPageGen():
-    src_folder, build_folder, install_folder = configureAndRunTests().getPaths()
+    src_folder, build_folder, install_folder = configureXmlParser().getPaths()
     coverage_map = CoverageMap(build_folder)
     coverage_map.addSourceDirectory(src_folder)
     coverage_map.generate()

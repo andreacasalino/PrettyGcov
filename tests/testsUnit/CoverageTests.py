@@ -3,13 +3,13 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 import unittest
-from util.CppProjectTest.CMakeHandler import configureAndRunTests
+from util.CMakeHandler import configureXmlParser
 from PrettyGcov.CoverageMap import CoverageMap
 from PrettyGcov.CoverageTree import makeCoverageTree
 
 class TestCoverageMap(unittest.TestCase):
     def __init__(self, *args, **kw):
-        self.src_folder, self.build_folder, self.install_folder = configureAndRunTests().getPaths()
+        self.src_folder, self.build_folder, self.install_folder = configureXmlParser().getPaths()
         unittest.TestCase.__init__(self, *args, **kw)
 
     def makeCoverageMap(self):

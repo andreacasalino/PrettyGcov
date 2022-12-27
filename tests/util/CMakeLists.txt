@@ -20,11 +20,10 @@ endif()
 
 include(FetchContent)
 message(STATUS "fetching deps")
-SET(BUILD_XML_Parser_SAMPLES OFF CACHE BOOL "samples OFF" FORCE)
-SET(BUILD_XML_Parser_TESTS ON CACHE BOOL "tests ON" FORCE)
+$OPTIONS
 FetchContent_Declare(
-  xml-parser
-  GIT_REPOSITORY https://github.com/andreacasalino/XML-parser.git
-  GIT_TAG        d3f2810bd5b1e278d0fb2e8eadd2b24ff533f11e
+  $NAME
+  GIT_REPOSITORY $URL
+  GIT_TAG        $TAG
 )
-FetchContent_MakeAvailable(xml-parser)
+FetchContent_MakeAvailable($NAME)

@@ -2,6 +2,6 @@ import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-from util.CppProjectTest.CMakeHandler import configureAndRunTests
+from util.CMakeHandler import configureXmlParser
 
-configureAndRunTests(True, True, True, True)
+print(configureXmlParser(True, True, True, True).getPaths())

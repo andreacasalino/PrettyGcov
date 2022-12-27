@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-def parse_slice(line, start_pos):
-    terminator_pos = line.find(':', start_pos)
-    result =  line[start_pos:terminator_pos]
-    result = result.lstrip()
-    return result, terminator_pos + 1
+def trimEol(line):
+    if line[-1] == '\n':
+        return line[:-1]
+    return line
 
 def parse_kind(kind):
     if kind[-1] == '#':
@@ -13,16 +12,26 @@ def parse_kind(kind):
         return kind
     return 'C'
 
-def trimEol(line):
-    if line[-1] == '\n':
-        return line[:-1]
-    return line
-
 def parse_line(line):
-    kind, cursor = parse_slice(line, 0)
-    line_numb, cursor = parse_slice(line, cursor)
-    line_content = line[cursor:]
-    return {'kind':parse_kind(kind), 'line_numb':line_numb, 'line_content':trimEol(line_content)}
+    if(line[0]!=' '):
+        return None
+
+    def findSep(line, start_pos):
+        result = line.find(':', start_pos)
+        if result == -1:
+            raise Exception('Found invalid line when parsing gcov file:\n {}'.format(line))
+        return result
+    first_sep=findSep(line, 0)
+    second_sep=findSep(line, first_sep+1)
+
+    kind = parse_kind(line[0:first_sep].lstrip())
+    numb = int(line[first_sep+1:second_sep].lstrip())
+    content = trimEol(line[second_sep+1:])
+    return {
+        'kind':kind,
+        'line_numb':numb,
+        'line_content':content
+    }
 
 def fixPathSyntax(subject):
     # Path in Windows are by defualt with \. here we fix it to /    
@@ -39,11 +48,18 @@ class GcovFileBase:
 
     def __repr__(self) -> str:
         result='Source: {}\n'.format(self.source)
-        count=0 
+        count=1 
         for line in self.lines:
             result+='{} {} {}\n'.format(line['kind'], count, line['line'])
             count += 1
         return result
+
+def merge_kind(a, b):
+    if a == 'C' or b == 'C':
+        return 'C'
+    if a == '#' or b == '#':
+        return '#'
+    return '-'  
 
 class GcovFile(GcovFileBase):
     def __init__(self, filename: str):
@@ -51,15 +67,37 @@ class GcovFile(GcovFileBase):
         with open(filename, 'r') as stream:
             for line in stream.readlines():
                 content = parse_line(line)
-                if content['line_numb'] == '0':
+
+                if(content == None):
+                    continue
+
+                if content['line_numb'] == 0:
                     if content['line_content'].find('Source') == 0:
                         source_start = content['line_content'].find(':') + 1 
                         self.source = content['line_content'][source_start:]
                     continue
 
-                self.lines.append({'kind':content['kind'], 'line':content['line_content']})
+                index = content['line_numb'] - 1
+                if index < len(self.lines):
+                    if self.lines[index] == None:
+                        self.lines[index] = {'kind':content['kind'], 'line':content['line_content']}
+                        continue                    
+                    if content['line_content'] != self.lines[index]['line']:
+                        raise Exception('Incosistency in gcov file at: '.format(filename))
+                    self.lines[index]['kind'] = merge_kind(self.lines[index]['kind'], content['kind'])
+
+                else:
+                    while len(self.lines) < index:
+                        self.lines.append(None)
+                    self.lines.append({'kind':content['kind'], 'line':content['line_content']})
+
         if self.source == None:
             raise Exception('Source not found in .gcov file')
+
+        for line in self.lines:
+            if line == None:
+                raise Exception('Invalid gcov file at: '.format(filename))
+
         self.source = fixPathSyntax(self.source)
 
     def merge(self, anotherGcovFile: GcovFile):
@@ -69,8 +107,8 @@ class GcovFile(GcovFileBase):
             raise Exception('Incosistency merging 2 files from {}'.format(self.source))
         for k in range(len(self.lines)):
             o_kind = anotherGcovFile.lines[k]['kind']
-            if o_kind == 'C':
-                self.lines[k]['kind'] = 'C'        
+            this_kind = self.lines[k]['kind']
+            self.lines[k]['kind'] = merge_kind(this_kind, o_kind)
 
 class UncovarbleFile(GcovFileBase):
     def __init__(self, filename: str):
