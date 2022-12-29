@@ -1,3 +1,5 @@
+![binaries_compilation](https://github.com/andreacasalino/PrettyGcov/actions/workflows/runTests.yml/badge.svg)
+
 - [What is this library about](#intro)
 - [Typical scenario](#scenarios)
 - [Usage](#usage)

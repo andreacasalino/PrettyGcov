@@ -6,5 +6,7 @@
 
 - upload package to PyPi: twine upload dist/*
 
+- update tag in git repo
+
 - useful links:
     - https://www.youtube.com/watch?v=tEFkHEKypLI
