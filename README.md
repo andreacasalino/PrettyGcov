@@ -1,10 +1,12 @@
 ![binaries_compilation](https://github.com/andreacasalino/PrettyGcov/actions/workflows/runTests.yml/badge.svg)
 
+[![Downloads](https://static.pepy.tech/badge/prettygcov)](https://pepy.tech/project/prettygcov)
+
 - [What is this library about](#intro)
 - [Typical scenario](#scenarios)
 - [Usage](#usage)
 
-![overview:](image.png)
+![overview:](https://github.com/andreacasalino/PrettyGcov/tree/main/img/image.png)
 
 **Git** sources are available here: https://github.com/andreacasalino/PrettyGcov
 
