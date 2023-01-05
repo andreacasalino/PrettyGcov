@@ -6,7 +6,7 @@
 - [Typical scenario](#scenarios)
 - [Usage](#usage)
 
-![overview:](https://github.com/andreacasalino/PrettyGcov/tree/main/img/image.png)
+![overview:](img/image.png)
 
 **Git** sources are available here: https://github.com/andreacasalino/PrettyGcov
 
