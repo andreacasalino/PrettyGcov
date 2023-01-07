@@ -6,8 +6,6 @@
 - [Typical scenario](#scenarios)
 - [Usage](#usage)
 
-![overview:](img/image.png)
-
 **Git** sources are available here: https://github.com/andreacasalino/PrettyGcov
 
 This package can be also **pip** installed. Visit: https://pypi.org/project/PrettyGcov/  
@@ -18,8 +16,16 @@ Have you ever needed to process results coming from [**gcov**](https://gcc.gnu.o
 Felt like you needed a tool to automatically gather, parse and process [**gcov**](https://gcc.gnu.org/onlinedocs/gcc/Gcov-Intro.html#Gcov-Intro) results?
 Don't worry, you are in the right place as this package is what you are looking for :)!
 
-**PrettyGcov** is a **python** package able to parse coverage results, compute statistics for the entire projects or any subfolder and let you inspect them from your browser.
+**PrettyGcov** is a **python** package able to parse coverage results, compute statistics for the entire projects or any subfolder and let you inspect them from your browser. Indeed, this package contains also a nice **python** webserver that you can use to inspect coverage results:
 
+![](https://github.com/andreacasalino/PrettyGcov/blob/main/img/folders.png)
+![](https://github.com/andreacasalino/PrettyGcov/blob/main/img/files.png)
+
+individual source file can be inspected in order to check the coverage line by line (red lines are uncoverd, green ones are covered):
+
+![](https://github.com/andreacasalino/PrettyGcov/blob/main/img/source.png)
+
+The classes uses for generating the statistics are exposed and you can also decide to not use the webserver and just use the scripts inside this package to compute and process coverage results.
 
 ## SCENARIOS
 
